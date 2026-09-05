@@ -1,9 +1,10 @@
-AR AC Drive Demo
+TERA AR AC DRIVE
 
-เปิด index.html ผ่าน HTTPS
-ใช้ marker/acdrive.patt ใน AR.js
+ไฟล์:
+- index.html
+- marker/tera_marker.png
 
 หมายเหตุ:
-ไฟล์ patt ในชุดนี้เป็นไฟล์ตัวอย่างโครงสร้าง
-สำหรับใช้งานจริงควรสร้าง marker จากภาพที่ต้องการด้วย AR.js Marker Training
-แล้วนำไฟล์ .patt มาแทนที่
+ไฟล์ tera_marker.png เป็นภาพ Marker จากโลโก้ TERA
+สำหรับสร้างไฟล์ .patt ให้ใช้ AR.js Marker Training
+แล้วนำ tera.patt ใส่ในโฟลเดอร์ marker
