@@ -2,72 +2,140 @@
 <html>
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>TERA AR AC Drive</title>
+
 <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/ar.js@3.4.5/aframe/build/aframe-ar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ar-js-org/ar.js@3.4.5/aframe/build/aframe-ar-nft.js"></script>
+
 <style>
-body{margin:0;overflow:hidden}
-#control{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99;text-align:center}
-button{padding:12px 20px;margin:5px;font-size:18px;border-radius:8px}
-#speed{background:white;padding:10px;border-radius:8px;font-size:22px}
+body{
+ margin:0;
+ overflow:hidden;
+}
+
+#control{
+ position:fixed;
+ bottom:20px;
+ left:50%;
+ transform:translateX(-50%);
+ z-index:9999;
+ text-align:center;
+}
+
+button{
+ padding:12px 18px;
+ margin:4px;
+ font-size:18px;
+ border-radius:10px;
+ border:none;
+ background:#0066ff;
+ color:white;
+}
+
+#status{
+ background:white;
+ padding:10px;
+ border-radius:8px;
+ font-size:20px;
+}
 </style>
+
 </head>
+
 <body>
 
 <div id="control">
-<div id="speed">Speed : 0 Hz</div>
-<button onclick="change(5)">+ Speed</button>
-<button onclick="change(-5)">- Speed</button>
-<button onclick="stopMotor()">STOP</button>
+<div id="status">AC Drive Speed : 0 Hz</div>
+<button onclick="speedUp()">+5 Hz</button>
+<button onclick="speedDown()">-5 Hz</button>
+<button onclick="stopDrive()">STOP</button>
 </div>
 
-<a-scene embedded arjs="sourceType:webcam;debugUIEnabled:false">
 
-<!-- ใช้ Hiro Marker เป็นตัวทดสอบ
-เปลี่ยนเป็น tera.patt หลังจาก Generate Marker -->
+<a-scene
+embedded
+vr-mode-ui="enabled:false"
+arjs="sourceType: webcam; debugUIEnabled:false;">
+
+<!-- ใช้ Hiro marker เพื่อทดสอบเปิดกล้อง -->
 <a-marker preset="hiro">
 
-<a-box position="0 0.5 0" scale="1 1.5 .35" color="#222"></a-box>
+<!-- AC DRIVE -->
+<a-box
+position="0 0.5 0"
+scale="1 1.5 0.35"
+color="#222">
+</a-box>
 
-<a-box position="0 .75 .2" scale=".5 .25 .02" color="#00ff00"></a-box>
+<a-box
+position="0 0.8 0.2"
+scale="0.5 0.3 0.03"
+color="lime">
+</a-box>
 
-<a-text value="TERA AC DRIVE"
+
+<a-text
+value="TERA AC DRIVE"
 position="-0.8 1.5 0"
 rotation="-90 0 0"
 width="3"
-color="white"></a-text>
+color="white">
+</a-text>
 
-<a-cylinder id="fan"
-position="0 .5 .3"
-radius=".25"
-height=".05"
+
+<a-cylinder
+id="fan"
+position="0 0.5 0.25"
+radius="0.25"
+height="0.05"
 rotation="90 0 0"
-color="#00aaff"></a-cylinder>
+color="#00aaff">
+</a-cylinder>
+
 
 </a-marker>
 
+
 <a-entity camera></a-entity>
+
 </a-scene>
 
+
 <script>
-let speed=0;
+
+let hz=0;
 let fan=document.querySelector("#fan");
 
-function change(v){
-speed+=v;
-if(speed<0)speed=0;
-if(speed>60)speed=60;
-document.getElementById("speed").innerHTML="Speed : "+speed+" Hz";
-if(speed>0){
-fan.setAttribute("animation",
-"property:rotation;to:90 "+speed*10+" 0;loop:true;dur:500");
+function show(){
+ document.getElementById("status").innerHTML=
+ "AC Drive Speed : "+hz+" Hz";
+
+ if(hz>0){
+ fan.setAttribute(
+ "animation",
+ "property:rotation;to:90 "+hz*15+" 0;loop:true;dur:500"
+ );
+ }
 }
+
+function speedUp(){
+ if(hz<60) hz+=5;
+ show();
 }
-function stopMotor(){
-speed=0;
-document.getElementById("speed").innerHTML="Speed : 0 Hz";
-fan.removeAttribute("animation");
+
+function speedDown(){
+ if(hz>0) hz-=5;
+ show();
 }
+
+function stopDrive(){
+ hz=0;
+ fan.removeAttribute("animation");
+ show();
+}
+
 </script>
 
 </body>
