@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>AR AC Drive Controller</title>
+
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ar.js@3.4.5/aframe/build/aframe-ar.js"></script>
+
+<style>
+body{margin:0;overflow:hidden}
+#control{
+position:absolute;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+z-index:10;
+text-align:center
+}
+button{
+font-size:20px;
+padding:12px 20px;
+margin:5px;
+border-radius:10px;
+border:0;
+background:#0066cc;
+color:white
+}
+#speed{
+background:white;
+padding:10px;
+font-size:22px;
+border-radius:10px
+}
+</style>
+</head>
+
+<body>
+
+<div id="control">
+<div id="speed">Speed : 0 Hz</div>
+<button onclick="up()">+ Speed</button>
+<button onclick="down()">- Speed</button>
+</div>
+
+<a-scene embedded arjs="sourceType:webcam;debugUIEnabled:false">
+
+<a-marker type="pattern" url="marker/acdrive.patt">
+
+<a-box position="0 0.5 0" scale="1 1.5 0.3" color="#222"></a-box>
+
+<a-text value="VEICHI AC DRIVE"
+position="-0.8 1.5 0"
+rotation="-90 0 0"
+color="white"
+width="3"></a-text>
+
+<a-cylinder id="fan"
+position="0 0.5 0.2"
+radius="0.25"
+height="0.05"
+rotation="90 0 0"
+color="#00aaff"></a-cylinder>
+
+</a-marker>
+
+<a-entity camera></a-entity>
+
+</a-scene>
+
+<script>
+let speed=0;
+let fan=document.querySelector("#fan");
+
+function update(){
+document.getElementById("speed").innerHTML="Speed : "+speed+" Hz";
+
+if(speed>0){
+fan.setAttribute("animation",
+"property:rotation;to:90 "+(speed*10)+" 0;loop:true;dur:"+Math.max(100,1000/speed));
+}else{
+fan.removeAttribute("animation");
+}
+}
+
+function up(){
+if(speed<60) speed+=5;
+update();
+}
+
+function down(){
+if(speed>0) speed-=5;
+update();
+}
+</script>
+
+</body>
+</html>
